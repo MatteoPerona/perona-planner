@@ -1,25 +1,22 @@
-from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+from flask_login import UserMixin
+from . import db
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///planner.db'  # Configure the database URI
-db = SQLAlchemy(app)
-
-class User(db.Model):
+class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    projects = db.relationship('Project', backref='user', lazy=True)
+    email = db.Column(db.String(100), unique=True)
+    password = db.Column(db.String(100))
+    username = db.Column(db.String(1000))
+    projects = db.relationship('Project', backref='user', lazy=True, cascade="all, delete-orphan")
 
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
-    tasks = db.relationship('Task', backref='project', lazy=True)
+    tasks = db.relationship('Task', backref='project', lazy=True, cascade="all, delete-orphan")
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100), nullable=False)
-    description = db.Column(db.String(200))
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)

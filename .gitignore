@@ -21,6 +21,7 @@ instance/
 
 # Extras
 directory-layout.txt
+config.py
 
 # IDE-specific files (uncomment as needed)
 # .vscode/

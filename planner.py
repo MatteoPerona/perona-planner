@@ -1,14 +1,14 @@
 from flask import Flask, request, redirect, render_template_string
 from flask_sqlalchemy import SQLAlchemy
-# from models import User, Project, Task
 
-
+################################ INITIALIZE APP ################################
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///planner.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
+################################ DEFINE MODELS #################################
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -30,31 +30,36 @@ class Task(db.Model):
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
 
 
+################################### ROUTING ####################################
+
 
 # Model definitions (User, Project, Task) go here
 
 with app.app_context():
     db.create_all()
 
-# @app.before_first_request
-# def create_tables():
-#     db.create_all()
-
-@app.route('/user/create', methods=['GET', 'POST'])
-def create_user():
+@app.route('/login', methods=['GET', 'POST'])
+def login():
     if request.method == 'POST':
         username = request.form.get('username')
-        if username:
-            new_user = User(username=username)
-            db.session.add(new_user)
-            db.session.commit()
-            return redirect('/users')
+        user = User.query.filter_by(username=username).first()
+        if user and user.check_password(password):
+            login_user(user)
+            return redirect('/index')
+        else:
+            flash('Invalid username or password')
     return render_template_string('''
         <form method="post">
             Username: <input type="text" name="username"><br>
-            <input type="submit" value="Create User">
+            <input type="submit" value="Login">
         </form>
     ''')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect('/login')
 
 @app.route('/users')
 def list_users():

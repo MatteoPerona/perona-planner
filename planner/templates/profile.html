@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="title">Welcome, {{ name }}!</h1>
+
+
+<!-- Form to Add Project -->
+<form method="post" action="/add_project">
+    <!-- <label for="project_title">Project Title:</label><br> -->
+    <input type="text" id="project_title" name="title" placeholder="Project Title" required>
+    <input type="submit" value="Add Project">
+</form> &nbsp
+
+<!-- Form to Add Task -->
+<form method="post" action="/add_task">
+    <!-- <label for="task_title">Task Title:</label><br> -->
+    <input type="text" id="task_title" name="title" placeholder="Task Title" required>
+
+    <label for="project">Project:</label>
+    <select id="project" name="project_id">
+        <!-- Dynamically load project options here -->
+        {% for project in projects %}
+        <option value="{{ project.id }}">{{ project.title }}</option>
+        {% endfor %}
+    </select>
+
+    <input type="date" name="start_date" required>
+    <input type="date" name="end_date" required>
+
+
+    <input type="submit" value="Add Task">
+</form>
+
+<hr>
+
+<!-- List of Projects -->
+<div id="projectsList">
+    {% for project in projects %}
+    <div class="project">
+        <div class="project-title" onclick="toggleTasks(this)">
+
+            <span class="arrow">&#9656;</span> <!-- This is a right-pointing arrow -->
+
+            {{ project.title }}
+
+            <form method="post" action="/delete_project/{{ project.id }}" style="display:inline;">
+                <input type="hidden" name="project_id" value="{{ project.id }}">
+                <button type="submit" class="delete-icon" style="border: none; background: none;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </form>
+
+            <!-- Toggle edit form -->
+            <button class="edit-icon" onclick="toggleEditForm('editProjectForm{{ project.id }}')"
+                style="border: none; background: none;">
+                <i class="fas fa-pencil-alt"></i>
+            </button>
+
+            <!-- Edit Project Form -->
+            <div id="editProjectForm{{ project.id }}" style="display:none;">
+                <form method="post" action="/edit_project/{{ project.id }}">
+                    <input type="text" name="new_title" placeholder="New Title" required>
+                    <input type="submit" value="Save Changes">
+                </form>
+            </div>
+
+        </div>
+        <div class="project-tasks">
+            {% for task in tasks[project.id] %}
+            <div>
+
+                {{ task.title }}
+
+                <form method="post" action="/delete_task/{{ task.id }}" style="display:inline;">
+                    <input type="hidden" name="task_id" value="{{ task.id }}">
+                    <button type="submit" class="delete-icon" style="border: none; background: none;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </form>
+
+                <!-- Toggle edit form -->
+                <button class="edit-icon" onclick="toggleEditForm('editTaskForm{{ task.id }}')"
+                    style="border: none; background: none;">
+                    <i class="fas fa-pencil-alt"></i>
+                </button>
+
+                <!-- Edit Task Form -->
+                <div id="editTaskForm{{ task.id }}" style="display:none;">
+                    <form method="post" action="/edit_task/{{ task.id }}">
+                        <input type="text" name="new_title" placeholder="New Title" required>
+                        <label for="project">Project:</label>
+                        <select id="project" name="new_project_id">
+                            {% for project in projects %}
+                            <option value="{{ project.id }}">{{ project.title }}</option>
+                            {% endfor %}
+                        </select>
+
+                        <input type="date" name="new_start_date" required>
+                        <input type="date" name="new_end_date" required>
+                        <input type="submit" value="Save Changes">
+                    </form>
+                </div>
+
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+<script>
+    function toggleTasks(element) {
+        var tasksContainer = element.nextElementSibling; // Find the tasks container
+        var arrow = element.querySelector('.arrow'); // Find the arrow within the clicked project title
+
+        // Toggle the display property to show/hide the tasks
+        if (tasksContainer.style.display === "none" || tasksContainer.style.display === "") {
+            tasksContainer.style.display = "block";
+            arrow.classList.add('down'); // Rotate arrow to point down
+        } else {
+            tasksContainer.style.display = "none";
+            arrow.classList.remove('down'); // Return arrow to point right
+        }
+    }
+</script>
+
+<script>
+    function toggleEditForm(formId) {
+        var form = document.getElementById(formId);
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+    }
+</script>
+
+
+{% endblock %}
