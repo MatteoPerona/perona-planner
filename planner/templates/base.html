@@ -6,9 +6,108 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Flask Auth Example</title>
+    <!-- <link rel="stylesheet" href="../styles/home-styles.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
+        .project-row {
+            display: flex;
+            justify-content: center;
+            /* Horizontal centering */
+            align-items: center;
+            /* Vertical centering */
+            width: auto;
+            font-size: 25px;
+            border: 1px solid black;
+        }
+
+        .task-type-rows {
+            width: 200px;
+            height: auto;
+            border: 1px solid black;
+        }
+
+        .project-column {
+            height: auto;
+            width: 500px;
+            border: 1px solid black;
+            text-align: center;
+        }
+
+
+
+        .task-types-cell {
+            flex: 0 0 auto;
+            height: 50px;
+            width: 50px;
+            border: 1px solid black;
+        }
+
+        .title-row {
+            flex: 0 0 auto;
+            width: auto;
+            height: 100px;
+            font-size: 50px;
+        }
+
+        .row {
+            width: auto;
+            height: auto;
+            /* border:1px solid black; */
+            margin: 0px;
+            display: flex;
+            white-space: nowrap;
+        }
+
+        .cell {
+            flex: 0 0 auto;
+            width: 25px;
+            height: 25px;
+            background: #ffffff;
+            border: 1px solid black;
+            margin: 0px;
+            text-align: center;
+            padding: 2px 0;
+            font-size: 14px;
+        }
+
+        /* Scrollable Planner */
+        #planner {
+            max-height: auto;
+            max-width: auto;
+            /* Enables vertical scrolling if content exceeds max-height */
+            /* Enables vertical scrolling if content exceeds max-width */
+            overflow-y: auto;
+            overflow-x: auto;
+
+            border: 1px solid #ccc;
+            /* Optional: adds a border around the list */
+            padding: 10px;
+            /* Optional: adds some padding inside the container */
+            color: black;
+            background: #ffffff;
+            text-align: left;
+
+            margin: 0 auto;
+            margin-top: 20px;
+            /* Optional: adds some space above the container */
+        }
+
+
+
+
+
+
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+
         /* Scrollable Projects List Styles */
         #projectsList {
             max-height: 400px;
@@ -29,7 +128,8 @@
         }
 
         .edit-icon,
-        .delete-icon {
+        .delete-icon,
+        .completed-checkbox{
             float: right;
             /* Anchor icons to the right */
             color: #777;
@@ -83,11 +183,22 @@
             transform: rotate(90deg);
             /* Rotate arrow to point down */
         }
+
+        .task-container {
+            /* text-align: center; */
+            background-color: #ffffff;
+            padding: 5px;
+        }
+
+        /* .day-month-year {
+            font-size: 16px;
+            color: #545454;
+        } */
     </style>
 </head>
 
 <body>
-    <section class="hero is-primary is-fullheight">
+    <section class="hero is-info is-fullheight is-fullwidth">
 
         <div class="hero-head">
             <nav class="navbar">

@@ -19,4 +19,7 @@ class Task(db.Model):
     title = db.Column(db.String(100), nullable=False)
     start_time = db.Column(db.DateTime, nullable=False)
     end_time = db.Column(db.DateTime, nullable=False)
+    task_type = db.Column(db.String(100), nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
+    completed = db.Column(db.Boolean, nullable=False, default=False)
+

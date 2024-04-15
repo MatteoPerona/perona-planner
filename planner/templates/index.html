@@ -1,10 +1,70 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1 class="title">
-  Flask Login Example
+<!-- <h1 class="title">
+	Flask Login Example
 </h1>
 <h2 class="subtitle">
-  Easy authentication and authorization in Flask.
-</h2>
+	Easy authentication and authorization in Flask.
+</h2> -->
+<div class="title">{{ name }}'s Planner</div>
+
+<hr>
+
+<h3 class="title is-4">Time Frame</h3>
+<form id="datePicker" action="/pick_timeframe">
+	Start Date:
+	<input type="date" id="start_date" name="timeframe_start" value="{{ earliest }}" required>
+	End Date:
+	<input type="date" id="end_date" name="timeframe_end" value="{{ latest }}" required>
+</form>
+
+
+<div id="planner">
+	
+	<div style="display: flex; width:auto;">
+		<div class="project-column">
+			<div class="cell" style="width: auto;">Year</div>
+			<div class="cell" style="width: auto;">Month</div>
+			<div class="cell" style="width: auto;">Day</div>
+			{% for project in projects %}
+				<div class="project-row" style="height: {{ task_info[project.id].task_types|length * 25 }}px;">
+					{{ project.title }}
+				</div>
+			{% endfor %}
+		</div>
+		<div class="planner-grid">
+			<div class="row" id="yearRow">
+				{% for year in year_days_count %}
+				<div class=cell style="width:{{ year_days_count[year] * 25}}px;">{{ year }}</div>
+				{% endfor %}
+			</div>
+			<div class="row" id="monthRow">
+				{% for year in calendar %}
+				{% for month in calendar[year] %}
+				<div class=cell style="width:{{calendar[year][month]|length * 25}}px;">{{ month }}</div>
+				{% endfor %}
+				{% endfor %}
+			</div>
+			<div class="row" id="dayRow">
+				{% for date in timeframe %}
+				<div class="cell">{{ date.day }}</div>
+				{% endfor %}
+			</div>
+
+			{% for project in project_dict %}
+				{% for task_type in project_dict[project] %}
+				<div class="row" id="dayRow">
+					{% for task in project_dict[project][task_type] %}
+					<div class="cell" style="width:{{25 * task['day_count']}}px;"> {{ task.title }} </div>
+					{% endfor %}
+				</div>
+				{% endfor %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+
+
 {% endblock %}
