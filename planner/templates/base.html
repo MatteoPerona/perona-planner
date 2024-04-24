@@ -13,12 +13,9 @@
         .project-row {
             display: flex;
             justify-content: center;
-            /* Horizontal centering */
             align-items: center;
-            /* Vertical centering */
             width: auto;
             font-size: 25px;
-            border: 1px solid black;
         }
 
         .task-type-rows {
@@ -33,7 +30,6 @@
             border: 1px solid black;
             text-align: center;
         }
-
 
 
         .task-types-cell {
@@ -70,6 +66,33 @@
             padding: 2px 0;
             font-size: 14px;
         }
+
+        .task-cell {
+            flex: 0 0 auto;
+            width: 25px;
+            height: 25px;
+            color:#fff;
+            border: 1px solid rgb(255, 255, 255);
+            border-radius: 5px;
+            margin: 0px;
+            text-align: center;
+            padding: 2px 0;
+            font-size: 14px;
+            overflow: hidden;
+        }
+
+        .day-cell {
+            flex: 0 0 auto;
+            width: 25px;
+            height: 25px;
+            color: #fff; 
+            background-color: #656565;
+            border: 1px solid rgb(255, 255, 255);
+            text-align: center;
+            padding: 2px 0;
+            font-size: 14px;
+            font-weight: 500;
+        } 
 
         /* Scrollable Planner */
         #planner {
@@ -190,10 +213,10 @@
             padding: 5px;
         }
 
-        /* .day-month-year {
-            font-size: 16px;
-            color: #545454;
-        } */
+        .completed {
+            text-decoration: line-through;
+            text-decoration-thickness: 3px;  /* Makes the strikethrough thicker */
+        }
     </style>
 </head>
 

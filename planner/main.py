@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, render_template, request, current_app, redir
 from flask_login import login_required, current_user
 import datetime
 import calendar
+import random 
 from . import db
 from .models import Project, Task
 from sqlalchemy import func
@@ -38,7 +39,7 @@ def index():
     current = earliest
     while current <= latest:
         year = current.year
-        month = current.month
+        month = month_number_to_text(current.month)
         day = current.day
         
         if year not in calendar:
@@ -74,15 +75,19 @@ def index():
         project_dict=project_dict
     )
 
+
 def generate_project_dict(projects, start_date, end_date):
 
     # Initialize the output dictionary
     project_dict = {}
 
+    colors = ['#e0ca3c', '#136f63', '#f34213', '#3e2f5b']
+
     # Process each project
-    for project in projects:
+    for i, project in enumerate(projects):
         # Fetch tasks for the project
         tasks = Task.query.filter_by(project_id=project.id).all()
+        proj_color = random_color()
 
         # Organize tasks by task type
         task_type_dict = {}
@@ -96,7 +101,9 @@ def generate_project_dict(projects, start_date, end_date):
                 'day_count': day_count + 1,
                 'title': task.title,
                 'start_date': task.start_time,
-                'end_date': task.end_time
+                'end_date': task.end_time,
+                'completed':task.completed,
+                'color': proj_color 
             }
             task_type_dict[task.task_type].append(task_details)
 
@@ -115,20 +122,31 @@ def generate_project_dict(projects, start_date, end_date):
             first_task = project_dict[project][task_type][0]
             last_task = project_dict[project][task_type][-1]
 
-            start_pad = generate_padder_task(start_date, first_task['start_date'])
-            end_pad = generate_padder_task(last_task['end_date'], end_date)
+            start_pad = generate_padder_task(
+                start_date - datetime.timedelta(days=1), 
+                first_task['start_date']
+            )
+            end_pad = generate_padder_task(
+                last_task['end_date'], 
+                end_date + datetime.timedelta(days=1)
+            )
 
             # Pad in between each of the tasks
             task_count = len(project_dict[project][task_type])
             ref_tasks = project_dict[project][task_type][:]
-            for i in range(task_count - 2):
+            for i in range(task_count - 1):
                 task_a = ref_tasks[i]
                 task_b = ref_tasks[i+1]
+                
+                # Account for overlapping tasks by shortening the deadline for the current task.
+                overlap = overlap_days(task_a['start_date'], task_a['end_date'], task_b['start_date'], task_b['end_date'])
+                if overlap > 0:
+                    task_a['day_count'] -= overlap
+                # Add padding if necessary
                 pad = generate_padder_task(task_a['end_date'], task_b['start_date'])
-                if pad != False:
+                if pad != False:    
                     project_dict[project][task_type].insert(i+i+1, pad)
-                # tmp = project_dict[project][task_type][:]
-                # project_dict[project][task_type] = tmp[:i+1] + i + tmp[i+1:-1]
+                    
             
             if start_pad != False: project_dict[project][task_type].insert(0, start_pad)
             if end_pad != False: project_dict[project][task_type].append(end_pad)
@@ -140,12 +158,41 @@ def generate_padder_task(start, end):
     if delta < 1:
         return False
     return {
-        'day_count': (end-start).days - 1,
+        'day_count': delta,
         'title': '',
         'start_date': start,
-        'end_date': end
+        'end_date': end,
+        'completed': False,
+        'color': 'hsla(0, 0%, 0%, 0)'
     }
 
+def overlap_days(start1, end1, start2, end2):
+    # Calculate the start and end of the overlap
+    overlap_start = max(start1, start2)
+    overlap_end = min(end1, end2)
+    
+    # Check if there is an overlap
+    if overlap_start <= overlap_end:
+        # Calculate the number of days of overlap
+        return (overlap_end - overlap_start).days + 1  # +1 to include both start and end days
+    else:
+        # No overlap
+        return 0
+
+def random_color():
+    h = random.randint(0, 360)
+    return f'hsl({h}, 50%, 50%)'
+
+def month_number_to_text(month_number):
+    # Dictionary to map month numbers to month names
+    month_dict = {
+        1: "January", 2: "February", 3: "March",
+        4: "April", 5: "May", 6: "June",
+        7: "July", 8: "August", 9: "September",
+        10: "October", 11: "November", 12: "December"
+    }
+    # Return the corresponding month name or an error if the input is out of range
+    return month_dict.get(month_number, "Invalid month number")
 
 
 

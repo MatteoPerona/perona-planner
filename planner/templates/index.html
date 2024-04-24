@@ -36,19 +36,19 @@
 		<div class="planner-grid">
 			<div class="row" id="yearRow">
 				{% for year in year_days_count %}
-				<div class=cell style="width:{{ year_days_count[year] * 25}}px;">{{ year }}</div>
+				<div class=day-cell style="width:{{ year_days_count[year] * 25}}px; font-weight: 1000;">{{ year }}</div>
 				{% endfor %}
 			</div>
 			<div class="row" id="monthRow">
 				{% for year in calendar %}
 				{% for month in calendar[year] %}
-				<div class=cell style="width:{{calendar[year][month]|length * 25}}px;">{{ month }}</div>
+				<div class=day-cell style="width:{{calendar[year][month]|length * 25}}px; background-color: #373737; font-weight: 1000;">{{ month }}</div>
 				{% endfor %}
 				{% endfor %}
 			</div>
 			<div class="row" id="dayRow">
 				{% for date in timeframe %}
-				<div class="cell">{{ date.day }}</div>
+				<div class="day-cell">{{ date.day }}</div>
 				{% endfor %}
 			</div>
 
@@ -56,7 +56,7 @@
 				{% for task_type in project_dict[project] %}
 				<div class="row" id="dayRow">
 					{% for task in project_dict[project][task_type] %}
-					<div class="cell" style="width:{{25 * task['day_count']}}px;"> {{ task.title }} </div>
+					<div class="task-cell" style="width:{{25 * task['day_count']}}px; {{ 'text-decoration: line-through; text-decoration-thickness: 2px;' if task.completed else '' }} background-color:{{task.color}};"> {{ task.title }} </div>
 					{% endfor %}
 				</div>
 				{% endfor %}
