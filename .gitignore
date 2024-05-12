@@ -31,3 +31,6 @@ config.py
 
 # Others
 *.log
+
+keys
+keys.pub
