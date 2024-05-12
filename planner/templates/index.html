@@ -9,9 +9,10 @@
 </h2> -->
 <div class="title">{{ name }}'s Planner</div>
 
+
 <hr>
 
-<h3 class="title is-4">Time Frame</h3>
+<h3 class="title is-5">Time Frame</h3>
 <form id="datePicker" action="/pick_timeframe">
 	Start Date:
 	<input type="date" id="start_date" name="timeframe_start" value="{{ earliest }}" required>
@@ -24,11 +25,11 @@
 	
 	<div style="display: flex; width:auto;">
 		<div class="project-column">
-			<div class="cell" style="width: auto;">Year</div>
-			<div class="cell" style="width: auto;">Month</div>
-			<div class="cell" style="width: auto;">Day</div>
+			<div class="day-cell" style="width: auto; font-weight: 1000;">Year</div>
+			<div class="day-cell" style="width: auto;background-color: #373737; font-weight: 1000;">Month</div>
+			<div class="day-cell" style="width: auto; font-weight: 1000;">Day</div>
 			{% for project in projects %}
-				<div class="project-row" style="height: {{ task_info[project.id].task_types|length * 25 }}px;">
+				<div class="project-row" style="height: {{ task_info[project.id].task_types|length * 25 }}px; color: {{ project.color }}; border-color: {{ project.color }}">
 					{{ project.title }}
 				</div>
 			{% endfor %}
@@ -53,6 +54,7 @@
 			</div>
 
 			{% for project in project_dict %}
+				<div style="height: 1px; width: auto; background-color: {{ project.color }};"></div>
 				{% for task_type in project_dict[project] %}
 				<div class="row" id="dayRow">
 					{% for task in project_dict[project][task_type] %}
@@ -60,11 +62,15 @@
 					{% endfor %}
 				</div>
 				{% endfor %}
+				<div style="height: 1px; width: auto; background-color: {{ project.color }};"></div>
 			{% endfor %}
 		</div>
 	</div>
 </div>
 
+<div class="donations">
+	<a href="https://www.buymeacoffee.com/TeoPerona" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/arial-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+</div>
 
 
 {% endblock %}

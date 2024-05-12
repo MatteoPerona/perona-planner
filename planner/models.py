@@ -13,6 +13,7 @@ class Project(db.Model):
     title = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     tasks = db.relationship('Task', backref='project', lazy=True, cascade="all, delete-orphan")
+    color = db.Column(db.String(7), nullable=False, default='#60bf8c')
 
 class Task(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -22,4 +23,5 @@ class Task(db.Model):
     task_type = db.Column(db.String(100), nullable=False)
     project_id = db.Column(db.Integer, db.ForeignKey('project.id'), nullable=False)
     completed = db.Column(db.Boolean, nullable=False, default=False)
+
 

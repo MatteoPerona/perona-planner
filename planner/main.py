@@ -103,7 +103,7 @@ def generate_project_dict(projects, start_date, end_date):
                 'start_date': task.start_time,
                 'end_date': task.end_time,
                 'completed':task.completed,
-                'color': proj_color 
+                'color': project.color 
             }
             task_type_dict[task.task_type].append(task_details)
 
@@ -218,17 +218,30 @@ def profile():
         for project in projects
     }
 
+    # List of colors to choose from
+    colors = [
+        ('#A1612B', 'Rust'),
+        ('#056DAC', 'Blue'),
+        ('#03A0DA', 'Sky'),
+        ('#969741', 'Booger'),
+        ('#83898A', 'Stone'),
+        ('#423F24', 'Army'),
+        ('#2D3638', 'Graphite'),
+    ]
+
     return render_template(
         'profile.html', 
         projects=projects, 
         tasks=tasks,
+        colors=colors,
         name=current_user.username
     )
 
 @main.route('/add_project', methods=['POST'])
 def add_project():
     title = request.form.get('title')
-    new_project = Project(title=title, user_id=current_user.id)  # assuming user authentication
+    color = request.form.get('color')
+    new_project = Project(title=title, color=color, user_id=current_user.id)  # assuming user authentication
     db.session.add(new_project)
     db.session.commit()
     return redirect(url_for('main.profile'))  # Redirect back to the profile page
@@ -276,9 +289,11 @@ def delete_task(task_id):
 def edit_project(project_id):
     project = Project.query.get_or_404(project_id)  # Fetch the project or return 404
     new_title = request.form['new_title']  # Get the new title from the form
+    new_color = request.form['new_color']  # Get the new color from the form
 
-    # Update the project's title
+    # Update the project's attributes
     project.title = new_title
+    project.color = new_color
     db.session.commit()  # Commit the changes to the database
 
     return redirect(url_for('main.profile'))  # Redirect back to the profile page or wherever appropriate

@@ -8,6 +8,7 @@
 <form method="post" action="/add_project">
     <!-- <label for="project_title">Project Title:</label><br> -->
     <input type="text" id="project_title" name="title" placeholder="Project Title" required>
+    <input type="color" name="color" value="#2D3638" required>
     <input type="submit" value="Add Project">
 </form> &nbsp
 
@@ -38,8 +39,9 @@
 <div id="projectsList">
     {% for project in projects %}
     <div class="project">
+        
         <div class="project-title" onclick="toggleTasks(this)">
-
+            <span class="color-circle" style="background-color: {{ project.color }};"></span>
             <span class="arrow">&#9656;</span> <!-- This is a right-pointing arrow -->
 
             {{ project.title }}
@@ -61,6 +63,7 @@
             <div id="editProjectForm{{ project.id }}" style="display:none;">
                 <form method="post" action="/edit_project/{{ project.id }}">
                     <input type="text" name="new_title" value="{{ project.title }}" required>
+                    <input type="color" name="new_color" value="{{ project.color }}" required>
                     <input type="submit" value="Save Changes">
                 </form>
             </div>

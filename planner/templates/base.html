@@ -10,12 +10,27 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
     <style>
+        .display-color{
+            height:15px;
+            width:15px;
+            border-radius: 15px;
+        }
+
+        .donations {
+            margin-top: 50px;
+        }
+
         .project-row {
             display: flex;
             justify-content: center;
             align-items: center;
             width: auto;
-            font-size: 25px;
+            min-height: 25px;
+            font-size: 20px;
+            border: 2px solid black;
+            border-radius: 5px;
+            padding:5px;
+            margin:1px;
         }
 
         .task-type-rows {
@@ -27,10 +42,8 @@
         .project-column {
             height: auto;
             width: 500px;
-            border: 1px solid black;
             text-align: center;
         }
-
 
         .task-types-cell {
             flex: 0 0 auto;
@@ -113,7 +126,8 @@
 
             margin: 0 auto;
             margin-top: 20px;
-            /* Optional: adds some space above the container */
+            /* O
+            ptional: adds some space above the container */
         }
 
 
@@ -174,6 +188,7 @@
             /* position: relative; */
             padding-top: 5px;
             padding-bottom: 5px;
+            /* display: inline; */
             /* border-bottom: 1px solid #ddd; */
         }
 
