@@ -1,0 +1,56 @@
+.flashes {
+    list-style-type: none;
+    padding: 0;
+}
+
+.flashes .error {
+    color: rgb(255, 169, 169);
+    font-weight: bold;
+}
+
+body {
+    font-family: sans-serif;
+    /* display: flex; */
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* height: 100vh; */
+    /* background-color: #f0f0f0; */
+}
+
+
+/* Navbar Stuff */
+
+.navbar-burger {
+    display: none;
+    cursor: pointer;
+    font-size: 24px;
+}
+
+.navbar-menu {
+    display: flex;
+    /* Default state */
+}
+
+@media screen and (max-width: 768px) {
+    .navbar-burger {
+        display: block;
+        /* Show the burger on smaller screens */
+    }
+
+    .navbar-menu {
+        display: none;
+        /* Hide the menu by default on smaller screens */
+        flex-direction: column;
+        background-color: #fff;
+        width: 100%;
+    }
+
+    .navbar-menu.is-active {
+        display: flex;
+        /* Show the menu when active */
+    }
+
+    .navbar-end .navbar-item {
+        padding: 10px 15px;
+    }
+}

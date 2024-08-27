@@ -2,6 +2,9 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
 from .config import DevelopmentConfig, ProductionConfig
+# from .auth import auth as auth_blueprint
+# from .main import main as main_blueprint
+# from .profile import profile as profile_blueprint
 
 # init SQLAlchemy so we can use it later in our models
 db = SQLAlchemy()
@@ -31,6 +34,10 @@ def create_app():
     with app.app_context():
         db.create_all()
 
+    # app.register_blueprint(auth_blueprint)
+    # app.register_blueprint(main_blueprint)
+    # app.register_blueprint(profile_blueprint)
+
     # blueprint for auth routes in our app
     from .auth import auth as auth_blueprint
     app.register_blueprint(auth_blueprint)
@@ -38,5 +45,8 @@ def create_app():
     # blueprint for non-auth parts of app
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .profile import profile_bp as profile_blueprint
+    app.register_blueprint(profile_blueprint)
 
     return app

@@ -1,0 +1,120 @@
+/* Scrollable Projects List Styles */
+#projectsList {
+    max-height: 400px;
+    /* Adjust the height as needed */
+    overflow-y: auto;
+    /* Enables vertical scrolling if content exceeds max-height */
+    border: 1px solid #ccc;
+    /* Optional: adds a border around the list */
+    padding: 10px;
+    /* Optional: adds some padding inside the container */
+    color: black;
+    background: #ffffff;
+    text-align: left;
+    max-width: 700px;
+    margin: 0 auto;
+    margin-top: 20px;
+    /* Optional: adds some space above the container */
+}
+
+
+.edit-icon,
+.delete-icon,
+.completed-checkbox {
+    float: right;
+    /* Anchor icons to the right */
+    color: #777;
+    /* Set icon color */
+    cursor: pointer;
+    /* Change cursor to pointer to indicate clickability */
+    margin-left: 10px;
+    /* Add some space between the icons */
+}
+
+.edit-icon:hover,
+.delete-icon:hover {
+    color: #000;
+    /* Change color n hover for a visual cue */
+}
+
+.project-title {
+    /* cursor: pointer; */
+    /* position: relative; */
+    padding-top: 5px;
+    padding-bottom: 5px;
+    /* display: inline; */
+    /* border-bottom: 1px solid #ddd; */
+}
+
+.project-title:hover {
+    color: #838383;
+}
+
+.project-tasks {
+    display: none;
+    /* Initially hide the tasks */
+    padding: 5px;
+    margin-left: 20px;
+}
+
+.project,
+.project-tasks div {
+    position: relative;
+    padding-right: 30px;
+    /* Add padding to prevent text from overlapping the icon */
+}
+
+.arrow {
+    display: inline-block;
+    margin-left: 10px;
+    /* Smooth transition for turning */
+    transition: transform 0.1s ease;
+}
+
+.arrow.down {
+    transform: rotate(90deg);
+    /* Rotate arrow to point down */
+}
+
+.task-container {
+    /* text-align: center; */
+    background-color: #ffffff;
+    padding: 5px;
+}
+
+.completed {
+    text-decoration: line-through;
+    text-decoration-thickness: 3px;
+    /* Makes the strikethrough thicker */
+}
+
+
+.plus-icon-button {
+    margin-top: 15px;
+}
+
+.plus-icon-button:hover {
+    color: rgba(3, 3, 3, 0.592);
+    border: rgba(3, 3, 3, 0.592);
+}
+
+.plus-icon-button i {
+    margin: 0;
+    padding: 0;
+}
+
+.add-logic-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    /* Centers content horizontally */
+}
+
+.color-circle {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: middle;
+}

@@ -1,18 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
-<!-- <h1 class="title">
-	Flask Login Example
-</h1>
-<h2 class="subtitle">
-	Easy authentication and authorization in Flask.
-</h2> -->
 <div class="title">{{ name }}'s Plannner</div>
-
 
 <hr>
 
-<h3 class="title is-5">Time Frame</h3>
+<!-- <h3 class="title is-5">Time Frame</h3> -->
 <form id="datePicker" action="/pick_timeframe">
 	Start Date:
 	<input type="date" id="start_date" name="timeframe_start" value="{{ earliest }}" required>

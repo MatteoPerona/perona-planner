@@ -1,0 +1,111 @@
+/* Scrollable Planner */
+#planner {
+    /* max-height: 700px; */
+    /* max-width: 1200px; */
+    /* Enables vertical scrolling if content exceeds max-height */
+    /* Enables vertical scrolling if content exceeds max-width */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #ccc;
+    /* Optional: adds a border around the list */
+    padding: 10px;
+    /* Optional: adds some padding inside the container */
+    color: black;
+    background: #ffffff;
+    text-align: left;
+    margin: 0 auto;
+    margin-top: 20px;
+    /* Optional: adds some space above the container */
+}
+
+.project-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    min-height: 25px;
+    font-size: 20px;
+    border: 2px solid black;
+    border-radius: 5px;
+    padding: 5px;
+    margin: 1px;
+}
+
+.task-type-rows {
+    width: 200px;
+    height: auto;
+    border: 1px solid black;
+}
+
+.project-column {
+    height: auto;
+    width: 500px;
+    text-align: center;
+}
+
+.task-types-cell {
+    flex: 0 0 auto;
+    height: 50px;
+    width: 50px;
+    border: 1px solid black;
+}
+
+.title-row {
+    flex: 0 0 auto;
+    width: auto;
+    height: 100px;
+    font-size: 50px;
+}
+
+.row {
+    width: auto;
+    height: auto;
+    /* border:1px solid black; */
+    margin: 0px;
+    display: flex;
+    white-space: nowrap;
+}
+
+.cell {
+    flex: 0 0 auto;
+    width: 25px;
+    height: 25px;
+    background: #ffffff;
+    border: 1px solid black;
+    margin: 0px;
+    text-align: center;
+    padding: 2px 0;
+    font-size: 14px;
+}
+
+.task-cell {
+    flex: 0 0 auto;
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    border: 1px solid rgb(255, 255, 255);
+    border-radius: 5px;
+    margin: 0px;
+    text-align: center;
+    padding: 2px 0;
+    font-size: 14px;
+    overflow: hidden;
+}
+
+.day-cell {
+    flex: 0 0 auto;
+    width: 25px;
+    height: 25px;
+    color: #fff;
+    background-color: #656565;
+    border: 1px solid rgb(255, 255, 255);
+    text-align: center;
+    padding: 2px 0;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+
+.donations {
+    margin-top: 50px;
+}

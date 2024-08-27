@@ -3,41 +3,15 @@
 {% block content %}
 <h1 class="title">Welcome, {{ name }}!</h1>
 
-
-<!-- Form to Add Project -->
-<!-- <form method="post" action="/add_project">
-    <input type="text" id="project_title" name="title" placeholder="Project Title" required>
-    <input type="color" name="color" value="#2D3638" required>
-    <input type="submit" value="Add Project">
-</form> &nbsp -->
-
-<!-- Form to Add Task -->
-<!-- <form method="post" action="/add_task">
-    <input type="text" id="task_title" name="title" placeholder="Task Title" required>
-
-    <label for="project">Project:</label>
-    <select id="project" name="project_id">
-        
-        {% for project in projects %}
-        <option value="{{ project.id }}">{{ project.title }}</option>
-        {% endfor %}
-    </select>
-
-    <input type="date" name="start_date" required>
-    <input type="date" name="end_date" required>
-
-    <input type="text" name="task_type" placeholder="Task Type" required>
-
-    <input type="submit" value="Add Task">
-</form> -->
-
 <hr>
 <!-- Flashing error messages -->
 {% with messages = get_flashed_messages(with_categories=True) %}
 {% if messages %}
 <ul class="flashes">
     {% for category, message in messages %}
-    <li class="{{ category }}">{{ message }}</li>
+    <li class="notification is-danger">
+        {{ message }}
+    </li>
     {% endfor %}
 </ul>
 {% endif %}
@@ -242,6 +216,5 @@
         }).catch(error => console.error('Error:', error));
     }
 </script>
-
 
 {% endblock %}
