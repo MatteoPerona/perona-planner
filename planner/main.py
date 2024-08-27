@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, render_template, request, current_app, redirect, url_for, jsonify
+from flask import Flask, Blueprint, render_template, request, current_app, redirect, url_for, jsonify, flash
 from flask_login import login_required, current_user
 import datetime
 import calendar
@@ -254,7 +254,11 @@ def add_task():
     start_date = datetime.datetime.strptime(request.form['start_date'], '%Y-%m-%d')
     end_date = datetime.datetime.strptime(request.form['end_date'], '%Y-%m-%d')
 
-    task_type = request.form.get('task_type');
+    if start_date > end_date:
+        flash('Start date cannot be after the end date.', 'error')  # Flash error message
+        return redirect(url_for('main.profile'))  # Redirect back to the task form
+
+    task_type = request.form.get('task_type')
 
     new_task = Task(
         title=title, 

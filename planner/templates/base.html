@@ -8,8 +8,40 @@
     <title>Flask Auth Example</title>
     <!-- <link rel="stylesheet" href="../styles/home-styles.css"> -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" />
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" /> -->
     <style>
+        .plus-icon-button {
+            margin-top: 15px;
+            /* background-color:rgba(0, 0, 0, 0.058);
+            border: rgba(3, 3, 3, 0.312);
+            color: rgba(3, 3, 3, 0.312);
+            padding: 0;
+            text-align: center;
+            text-decoration: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;  
+            font-size: 24px;
+            line-height: 40px; 
+            border-radius: 20%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            width: 40px;
+            height: 40px; */
+        }
+
+        .plus-icon-button:hover {
+            color: rgba(3, 3, 3, 0.592);
+            border: rgba(3, 3, 3, 0.592);
+        }
+
+        .plus-icon-button i {
+            margin: 0;
+            padding: 0;
+        }
+
+
         .color-circle {
             display: inline-block;
             width: 12px;
@@ -17,6 +49,13 @@
             border-radius: 50%;
             margin-right: 5px;
             vertical-align: middle;
+        }
+
+        .add-logic-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            /* Centers content horizontally */
         }
 
         .donations {
@@ -110,6 +149,17 @@
             font-weight: 500;
         }
 
+        .flashes {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .flashes .error {
+            color: rgb(255, 169, 169);
+            font-weight: bold;
+        }
+
+
         /* Scrollable Planner */
         #planner {
             max-height: auto;
@@ -135,11 +185,11 @@
 
         body {
             font-family: sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
+            /* display: flex; */
+            /* justify-content: center; */
+            /* align-items: center; */
+            /* height: 100vh; */
+            /* background-color: #f0f0f0; */
         }
 
 
@@ -231,6 +281,43 @@
             text-decoration-thickness: 3px;
             /* Makes the strikethrough thicker */
         }
+
+        /* Navbar Stuff */
+
+        .navbar-burger {
+            display: none;
+            cursor: pointer;
+            font-size: 24px;
+        }
+
+        .navbar-menu {
+            display: flex;
+            /* Default state */
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar-burger {
+                display: block;
+                /* Show the burger on smaller screens */
+            }
+
+            .navbar-menu {
+                display: none;
+                /* Hide the menu by default on smaller screens */
+                flex-direction: column;
+                background-color: #fff;
+                width: 100%;
+            }
+
+            .navbar-menu.is-active {
+                display: flex;
+                /* Show the menu when active */
+            }
+
+            .navbar-end .navbar-item {
+                padding: 10px 15px;
+            }
+        }
     </style>
 </head>
 
@@ -238,8 +325,42 @@
     <section class="hero is-info is-fullheight is-fullwidth">
 
         <div class="hero-head">
+            <!-- <nav class="navbar">
+                <div class="container">
+                    <div id="navbarMenuHeroA" class="navbar-menu">
+                        <div class="navbar-end">
+                            <a href="{{ url_for('main.index') }}" class="navbar-item">
+                                Home
+                            </a>
+                            {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('main.profile') }}" class="navbar-item">
+                                Profile
+                            </a>
+                            {% endif %}
+                            {% if not current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.login') }}" class="navbar-item">
+                                Login
+                            </a>
+                            <a href="{{ url_for('auth.signup') }}" class="navbar-item">
+                                Sign Up
+                            </a>
+                            {% endif %}
+                            {% if current_user.is_authenticated %}
+                            <a href="{{ url_for('auth.logout') }}" class="navbar-item">
+                                Logout
+                            </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </nav> -->
             <nav class="navbar">
                 <div class="container">
+                    <!-- Navbar Burger Icon for Toggling -->
+                    <div class="navbar-burger" id="navbarBurger">
+                        &#9776; <!-- This is the hamburger icon (☰) -->
+                    </div>
+
                     <div id="navbarMenuHeroA" class="navbar-menu">
                         <div class="navbar-end">
                             <a href="{{ url_for('main.index') }}" class="navbar-item">
@@ -279,3 +400,17 @@
 </body>
 
 </html>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Get the elements
+        const burger = document.getElementById('navbarBurger');
+        const menu = document.getElementById('navbarMenuHeroA');
+
+        // Add a click event on the burger menu
+        burger.addEventListener('click', function () {
+            // Toggle the class 'is-active' on both the 'navbar-burger' and the 'navbar-menu'
+            menu.classList.toggle('is-active');
+        });
+    });
+</script>

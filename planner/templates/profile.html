@@ -5,21 +5,19 @@
 
 
 <!-- Form to Add Project -->
-<form method="post" action="/add_project">
-    <!-- <label for="project_title">Project Title:</label><br> -->
+<!-- <form method="post" action="/add_project">
     <input type="text" id="project_title" name="title" placeholder="Project Title" required>
     <input type="color" name="color" value="#2D3638" required>
     <input type="submit" value="Add Project">
-</form> &nbsp
+</form> &nbsp -->
 
 <!-- Form to Add Task -->
-<form method="post" action="/add_task">
-    <!-- <label for="task_title">Task Title:</label><br> -->
+<!-- <form method="post" action="/add_task">
     <input type="text" id="task_title" name="title" placeholder="Task Title" required>
 
     <label for="project">Project:</label>
     <select id="project" name="project_id">
-        <!-- Dynamically load project options here -->
+        
         {% for project in projects %}
         <option value="{{ project.id }}">{{ project.title }}</option>
         {% endfor %}
@@ -31,15 +29,25 @@
     <input type="text" name="task_type" placeholder="Task Type" required>
 
     <input type="submit" value="Add Task">
-</form>
+</form> -->
 
 <hr>
+<!-- Flashing error messages -->
+{% with messages = get_flashed_messages(with_categories=True) %}
+{% if messages %}
+<ul class="flashes">
+    {% for category, message in messages %}
+    <li class="{{ category }}">{{ message }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+{% endwith %}
 
 <!-- List of Projects -->
 <div id="projectsList">
     {% for project in projects %}
     <div class="project">
-        
+
         <div class="project-title" onclick="toggleTasks(this)">
             <span class="color-circle" style="background-color: {{ project.color }};"></span>
             <span class="arrow">&#9656;</span> <!-- This is a right-pointing arrow -->
@@ -72,13 +80,13 @@
         <div class="project-tasks">
             {% for task in tasks[project.id] %}
             <div class="task-container">
-
-                {{ task.title }}: 
+                    <b>{{ task.title }}:</b>
+                
                 <span class="day-month-year">{{ task.start_time.strftime('%m/%d/%Y') }}</span>
-                to
+                -
                 <span class="day-month-year">{{ task.end_time.strftime('%m/%d/%Y') }}</span>
 
-                | Type: {{ task.task_type }}
+                | {{ task.task_type }}
 
                 <form method="post" action="/delete_task/{{ task.id }}" style="display:inline;">
                     <input type="hidden" name="task_id" value="{{ task.id }}">
@@ -93,7 +101,9 @@
                     <i class="fas fa-pencil-alt"></i>
                 </button>
 
-                <input type="checkbox" class="completed-checkbox" id="task_completed_{{ task.id }}" name="task_completed" onchange="updateTaskCompletion({{ task.id }}, this)" {{ 'checked' if task.completed else '' }}>
+                <input type="checkbox" class="completed-checkbox" id="task_completed_{{ task.id }}"
+                    name="task_completed" onchange="updateTaskCompletion({{ task.id }}, this)" {{ 'checked' if
+                    task.completed else '' }}>
 
                 <!-- Edit Task Form -->
                 <div id="editTaskForm{{ task.id }}" style="display:none;">
@@ -110,17 +120,67 @@
                             {% endfor %}
                         </select>
 
-                        <input type="date" name="new_start_date" value="{{ task.start_time.strftime('%Y-%m-%d') }}" required>
-                        <input type="date" name="new_end_date" value="{{ task.end_time.strftime('%Y-%m-%d') }}" required>
+                        <input type="date" name="new_start_date" value="{{ task.start_time.strftime('%Y-%m-%d') }}"
+                            required>
+                        <input type="date" name="new_end_date" value="{{ task.end_time.strftime('%Y-%m-%d') }}"
+                            required>
                         <input type="text" name="new_task_type" value="{{ task.task_type }}" required>
                         <input type="submit" value="Save Changes">
                     </form>
                 </div>
             </div>
             {% endfor %}
+            
+
+            <div class="add-logic-container">
+                <button class="plus-icon-button button is-info is-outlined" id="add_task_button_{{ project.id }}" onclick="toggleAddForm('add_task_form_{{ project.id }}', 'add_task_button_{{ project.id }}')">
+                    <!-- <i class="fas fa-plus"></i> -->
+                     Add Task
+                </button>
+                
+                <!-- Form to Add Task -->
+                <form method="post" action="/add_task" id="add_task_form_{{ project.id }}" style="display: none;">
+                    <!-- <label for="task_title">Task Title:</label><br> -->
+                    <input type="text" id="task_title" name="title" placeholder="New Task Title" required>
+
+                    <!-- <label for="project">Project:</label> -->
+                    <select id="project" name="project_id">
+                        <!-- Dynamically load project options here -->
+                        <option value="{{ project.id }}">{{ project.title }}</option>
+                        {% for project in projects %}
+                        <option value="{{ project.id }}">{{ project.title }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <label for="project">From:</label>
+                    <input type="date" name="start_date" required>
+                    <label for="project">To:</label>
+                    <input type="date" name="end_date" required>
+
+                    <input type="text" name="task_type" placeholder="Task Type" required>
+
+                    <input type="submit" value="Add Task" class="button is-info is-outlined">
+                </form>
+            </div>
         </div>
     </div>
+
+    <!-- <hr> -->
     {% endfor %}
+
+    <div class="add-logic-container">
+        <button class="plus-icon-button button is-info" id="add_project_button" onclick="toggleAddForm('add_project_form', 'add_project_button')">
+            <!-- <i class="fas fa-plus"></i> -->
+             Add Project
+        </button>
+        <!-- Form to Add Project -->
+        <form method="post" action="/add_project" id="add_project_form" style="display: none;">
+            <!-- <label for="project_title">Project Title:</label><br> -->
+            <input type="text" id="project_title" name="title" placeholder="New Project Title" required>
+            <input type="color" name="color" value="#2D3638" required>
+            <input type="submit" value="Add Project" class="button is-info is-outlined">
+        </form> &nbsp
+    </div>
 </div>
 
 <script>
@@ -144,6 +204,21 @@
             form.style.display = "block";
         } else {
             form.style.display = "none";
+        }
+    }
+
+    function toggleAddForm(formId, btnId) {
+        var form = document.getElementById(formId);
+        var button = document.getElementById(btnId);
+        if (form.style.display === "none") {
+            form.style.display = "block";
+        } else {
+            form.style.display = "none";
+        }
+        if (button.style.display === "none") {
+            button.style.display = "block";
+        } else {
+            button.style.display = "none";
         }
     }
 
