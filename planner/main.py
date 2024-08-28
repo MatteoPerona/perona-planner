@@ -78,6 +78,7 @@ def index():
         project_dict=project_dict
     )
 
+
 def generate_project_dict(projects, start_date, end_date):
 
     # Initialize the output dictionary
@@ -155,6 +156,7 @@ def generate_project_dict(projects, start_date, end_date):
 
     return project_dict
 
+
 def generate_padder_task(start, end):
     delta = (end-start).days - 1
     if delta < 1:
@@ -167,6 +169,7 @@ def generate_padder_task(start, end):
         'completed': False,
         'color': 'hsla(0, 0%, 0%, 0)'
     }
+
 
 def overlap_days(start1, end1, start2, end2):
     # Calculate the start and end of the overlap
@@ -181,9 +184,11 @@ def overlap_days(start1, end1, start2, end2):
         # No overlap
         return 0
 
+
 def random_color():
     h = random.randint(0, 360)
     return f'hsl({h}, 50%, 50%)'
+
 
 def month_number_to_text(month_number):
     # Dictionary to map month numbers to month names

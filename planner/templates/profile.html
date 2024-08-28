@@ -42,7 +42,7 @@
             </button>
 
             <!-- Edit Project Form -->
-            <div id="editProjectForm{{ project.id }}" style="display:none;">
+            <div class="add-logic-container" id="editProjectForm{{ project.id }}" style="display:none;">
                 <form method="post" action="/edit_project/{{ project.id }}">
                     <input type="text" name="new_title" value="{{ project.title }}" required>
                     <input type="color" name="new_color" value="{{ project.color }}" required>
@@ -54,8 +54,8 @@
         <div class="project-tasks">
             {% for task in tasks[project.id] %}
             <div class="task-container">
-                    <b>{{ task.title }}:</b>
-                
+                <b>{{ task.title }}:</b>
+
                 <span class="day-month-year">{{ task.start_time.strftime('%m/%d/%Y') }}</span>
                 -
                 <span class="day-month-year">{{ task.end_time.strftime('%m/%d/%Y') }}</span>
@@ -77,8 +77,9 @@
 
                 <input type="checkbox" class="completed-checkbox" id="task_completed_{{ task.id }}"
                     name="task_completed" onchange="updateTaskCompletion({{ task.id }}, this)" {{ 'checked' if
-                    task.completed else '' }}>
-
+                    task.completed else '' }} />
+            </div>
+            <div class="add-logic-container">
                 <!-- Edit Task Form -->
                 <div id="editTaskForm{{ task.id }}" style="display:none;">
                     <form method="post" action="/edit_task/{{ task.id }}">
@@ -104,14 +105,15 @@
                 </div>
             </div>
             {% endfor %}
-            
+
 
             <div class="add-logic-container">
-                <button class="plus-icon-button button is-info is-outlined" id="add_task_button_{{ project.id }}" onclick="toggleAddForm('add_task_form_{{ project.id }}', 'add_task_button_{{ project.id }}')">
+                <button class="plus-icon-button button is-info is-outlined" id="add_task_button_{{ project.id }}"
+                    onclick="toggleAddForm('add_task_form_{{ project.id }}', 'add_task_button_{{ project.id }}')">
                     <!-- <i class="fas fa-plus"></i> -->
-                     Add Task
+                    Add Task
                 </button>
-                
+
                 <!-- Form to Add Task -->
                 <form method="post" action="/add_task" id="add_task_form_{{ project.id }}" style="display: none;">
                     <!-- <label for="task_title">Task Title:</label><br> -->
@@ -123,6 +125,14 @@
                         <option value="{{ project.id }}">{{ project.title }}</option>
                         {% for project in projects %}
                         <option value="{{ project.id }}">{{ project.title }}</option>
+                        {% endfor %}
+
+                        {% for project_sub in projects_sub %}
+                        {% if project_sub.id == project.id %}
+                        <option value="{{ project.id }}" selected>{{ project_sub.title }}</option>
+                        {% else %}
+                        <option value="{{ project.id }}">{{ project_sub.title }}</option>
+                        {% endif %}
                         {% endfor %}
                     </select>
 
@@ -143,9 +153,10 @@
     {% endfor %}
 
     <div class="add-logic-container">
-        <button class="plus-icon-button button is-info" id="add_project_button" onclick="toggleAddForm('add_project_form', 'add_project_button')">
+        <button class="plus-icon-button button is-info" id="add_project_button"
+            onclick="toggleAddForm('add_project_form', 'add_project_button')">
             <!-- <i class="fas fa-plus"></i> -->
-             Add Project
+            Add Project
         </button>
         <!-- Form to Add Project -->
         <form method="post" action="/add_project" id="add_project_form" style="display: none;">
@@ -216,5 +227,6 @@
         }).catch(error => console.error('Error:', error));
     }
 </script>
+
 
 {% endblock %}
