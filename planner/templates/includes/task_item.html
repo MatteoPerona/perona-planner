@@ -1,0 +1,26 @@
+<div class="task-container">
+    <b>{{ task.title }}:</b>
+    <span class="day-month-year">{{ task.start_time.strftime('%m/%d/%Y') }}</span>
+    -
+    <span class="day-month-year">{{ task.end_time.strftime('%m/%d/%Y') }}</span>
+    | {{ task.task_type }}
+
+    {{ icons.delete_icon('/delete_task/' ~ task.id) }}
+    {{ icons.edit_icon('editTaskForm' ~ task.id) }}
+
+    <input type="checkbox" class="completed-checkbox" id="task_completed_{{ task.id }}"
+           name="task_completed" onchange="updateTaskCompletion({{ task.id }}, this)"
+           {{ 'checked' if task.completed else '' }} />
+</div>
+<div class="add-logic-container">
+    <div id="editTaskForm{{ task.id }}" style="display:none;">
+        <form method="post" action="/edit_task/{{ task.id }}">
+            {{ forms.input('text', 'new_title', task.title, required=true) }}
+            {{ forms.select('new_project_id', projects, task.project_id) }}
+            {{ forms.input('date', 'new_start_date', task.start_time.strftime('%Y-%m-%d'), required=true) }}
+            {{ forms.input('date', 'new_end_date', task.end_time.strftime('%Y-%m-%d'), required=true) }}
+            {{ forms.input('text', 'new_task_type', task.task_type, required=true) }}
+            <input type="submit" value="Save Changes">
+        </form>
+    </div>
+</div>

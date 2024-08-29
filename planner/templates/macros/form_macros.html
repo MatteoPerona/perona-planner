@@ -1,0 +1,11 @@
+{% macro input(type, name, value='', placeholder='', required=false) %}
+<input type="{{ type }}" name="{{ name }}" value="{{ value }}" placeholder="{{ placeholder }}" {{ 'required' if required }}>
+{% endmacro %}
+
+{% macro select(name, options, selected='') %}
+<select name="{{ name }}">
+    {% for option in options %}
+    <option value="{{ option.id }}" {{ 'selected' if option.id == selected }}>{{ option.title }}</option>
+    {% endfor %}
+</select>
+{% endmacro %}

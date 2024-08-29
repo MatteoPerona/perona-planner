@@ -10,7 +10,7 @@ from .config import DevelopmentConfig, ProductionConfig
 db = SQLAlchemy()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, template_folder='templates', static_folder='static')
     # app.config['SECRET_KEY'] = 'secret-key-goes-here'
     # app.config.from_pyfile('../config.py') 
     # app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///planner.db'

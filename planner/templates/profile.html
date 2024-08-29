@@ -1,232 +1,31 @@
 {% extends "base.html" %}
 
+{% import 'macros/form_macros.html' as forms %}
+{% import 'macros/icon_macros.html' as icons %}
+
 {% block content %}
 <h1 class="title">Welcome, {{ name }}!</h1>
 
 <hr>
-<!-- Flashing error messages -->
-{% with messages = get_flashed_messages(with_categories=True) %}
-{% if messages %}
-<ul class="flashes">
-    {% for category, message in messages %}
-    <li class="notification is-danger">
-        {{ message }}
-    </li>
-    {% endfor %}
-</ul>
-{% endif %}
-{% endwith %}
 
-<!-- List of Projects -->
+{% include 'includes/flash_messages.html' %}
+
 <div id="projectsList">
     {% for project in projects %}
     <div class="project">
-
-        <div class="project-title" onclick="toggleTasks(this)">
-            <span class="color-circle" style="background-color: {{ project.color }};"></span>
-            <span class="arrow">&#9656;</span> <!-- This is a right-pointing arrow -->
-
-            {{ project.title }}
-
-            <form method="post" action="/delete_project/{{ project.id }}" style="display:inline;">
-                <input type="hidden" name="project_id" value="{{ project.id }}">
-                <button type="submit" class="delete-icon" style="border: none; background: none;">
-                    <i class="fas fa-trash"></i>
-                </button>
-            </form>
-
-            <!-- Toggle edit form -->
-            <button class="edit-icon" onclick="toggleEditForm('editProjectForm{{ project.id }}')"
-                style="border: none; background: none;">
-                <i class="fas fa-pencil-alt"></i>
-            </button>
-
-            <!-- Edit Project Form -->
-            <div class="add-logic-container" id="editProjectForm{{ project.id }}" style="display:none;">
-                <form method="post" action="/edit_project/{{ project.id }}">
-                    <input type="text" name="new_title" value="{{ project.title }}" required>
-                    <input type="color" name="new_color" value="{{ project.color }}" required>
-                    <input type="submit" value="Save Changes">
-                </form>
-            </div>
-
-        </div>
+        {% include 'includes/project_header.html' %}
         <div class="project-tasks">
             {% for task in tasks[project.id] %}
-            <div class="task-container">
-                <b>{{ task.title }}:</b>
-
-                <span class="day-month-year">{{ task.start_time.strftime('%m/%d/%Y') }}</span>
-                -
-                <span class="day-month-year">{{ task.end_time.strftime('%m/%d/%Y') }}</span>
-
-                | {{ task.task_type }}
-
-                <form method="post" action="/delete_task/{{ task.id }}" style="display:inline;">
-                    <input type="hidden" name="task_id" value="{{ task.id }}">
-                    <button type="submit" class="delete-icon" style="border: none; background: none;">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </form>
-
-                <!-- Toggle edit form -->
-                <button class="edit-icon" onclick="toggleEditForm('editTaskForm{{ task.id }}')"
-                    style="border: none; background: none;">
-                    <i class="fas fa-pencil-alt"></i>
-                </button>
-
-                <input type="checkbox" class="completed-checkbox" id="task_completed_{{ task.id }}"
-                    name="task_completed" onchange="updateTaskCompletion({{ task.id }}, this)" {{ 'checked' if
-                    task.completed else '' }} />
-            </div>
-            <div class="add-logic-container">
-                <!-- Edit Task Form -->
-                <div id="editTaskForm{{ task.id }}" style="display:none;">
-                    <form method="post" action="/edit_task/{{ task.id }}">
-                        <input type="text" name="new_title" value="{{ task.title }}" required>
-                        <label for="project">Project:</label>
-                        <select id="project" name="new_project_id">
-                            {% for project in projects %}
-                            {% if project.id == task.project_id %}
-                            <option value="{{ project.id }}" selected>{{ project.title }}</option>
-                            {% else %}
-                            <option value="{{ project.id }}">{{ project.title }}</option>
-                            {% endif %}
-                            {% endfor %}
-                        </select>
-
-                        <input type="date" name="new_start_date" value="{{ task.start_time.strftime('%Y-%m-%d') }}"
-                            required>
-                        <input type="date" name="new_end_date" value="{{ task.end_time.strftime('%Y-%m-%d') }}"
-                            required>
-                        <input type="text" name="new_task_type" value="{{ task.task_type }}" required>
-                        <input type="submit" value="Save Changes">
-                    </form>
-                </div>
-            </div>
+            {% include 'includes/task_item.html' %}
             {% endfor %}
-
-
-            <div class="add-logic-container">
-                <button class="plus-icon-button button is-info is-outlined" id="add_task_button_{{ project.id }}"
-                    onclick="toggleAddForm('add_task_form_{{ project.id }}', 'add_task_button_{{ project.id }}')">
-                    <!-- <i class="fas fa-plus"></i> -->
-                    Add Task
-                </button>
-
-                <!-- Form to Add Task -->
-                <form method="post" action="/add_task" id="add_task_form_{{ project.id }}" style="display: none;">
-                    <!-- <label for="task_title">Task Title:</label><br> -->
-                    <input type="text" id="task_title" name="title" placeholder="New Task Title" required>
-
-                    <!-- <label for="project">Project:</label> -->
-                    <select id="project" name="project_id">
-                        <!-- Dynamically load project options here -->
-                        <option value="{{ project.id }}">{{ project.title }}</option>
-                        {% for project in projects %}
-                        <option value="{{ project.id }}">{{ project.title }}</option>
-                        {% endfor %}
-
-                        {% for project_sub in projects_sub %}
-                        {% if project_sub.id == project.id %}
-                        <option value="{{ project.id }}" selected>{{ project_sub.title }}</option>
-                        {% else %}
-                        <option value="{{ project.id }}">{{ project_sub.title }}</option>
-                        {% endif %}
-                        {% endfor %}
-                    </select>
-
-                    <label for="project">From:</label>
-                    <input type="date" name="start_date" required>
-                    <label for="project">To:</label>
-                    <input type="date" name="end_date" required>
-
-                    <input type="text" name="task_type" placeholder="Task Type" required>
-
-                    <input type="submit" value="Add Task" class="button is-info is-outlined">
-                </form>
-            </div>
+            {% include 'includes/add_task_form.html' %}
         </div>
     </div>
-
-    <!-- <hr> -->
     {% endfor %}
 
-    <div class="add-logic-container">
-        <button class="plus-icon-button button is-info" id="add_project_button"
-            onclick="toggleAddForm('add_project_form', 'add_project_button')">
-            <!-- <i class="fas fa-plus"></i> -->
-            Add Project
-        </button>
-        <!-- Form to Add Project -->
-        <form method="post" action="/add_project" id="add_project_form" style="display: none;">
-            <!-- <label for="project_title">Project Title:</label><br> -->
-            <input type="text" id="project_title" name="title" placeholder="New Project Title" required>
-            <input type="color" name="color" value="#2D3638" required>
-            <input type="submit" value="Add Project" class="button is-info is-outlined">
-        </form> &nbsp
-    </div>
+    {% include 'includes/add_project_form.html' %}
 </div>
 
-<script>
-    function toggleTasks(element) {
-        var tasksContainer = element.nextElementSibling; // Find the tasks container
-        var arrow = element.querySelector('.arrow'); // Find the arrow within the clicked project title
-
-        // Toggle the display property to show/hide the tasks
-        if (tasksContainer.style.display === "none" || tasksContainer.style.display === "") {
-            tasksContainer.style.display = "block";
-            arrow.classList.add('down'); // Rotate arrow to point down
-        } else {
-            tasksContainer.style.display = "none";
-            arrow.classList.remove('down'); // Return arrow to point right
-        }
-    }
-
-    function toggleEditForm(formId) {
-        var form = document.getElementById(formId);
-        if (form.style.display === "none") {
-            form.style.display = "block";
-        } else {
-            form.style.display = "none";
-        }
-    }
-
-    function toggleAddForm(formId, btnId) {
-        var form = document.getElementById(formId);
-        var button = document.getElementById(btnId);
-        if (form.style.display === "none") {
-            form.style.display = "block";
-        } else {
-            form.style.display = "none";
-        }
-        if (button.style.display === "none") {
-            button.style.display = "block";
-        } else {
-            button.style.display = "none";
-        }
-    }
-
-    function updateTaskCompletion(taskId, checkboxElement) {
-        fetch(`/task_completion/${taskId}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                // Ensure you have CSRF protection handled if needed
-            },
-            body: JSON.stringify({
-                'task_completed': checkboxElement.checked
-            })
-        }).then(response => {
-            if (response.ok) {
-                console.log('Completion status updated');
-            } else {
-                console.log('Failed to update');
-                checkboxElement.checked = !checkboxElement.checked; // Revert checkbox state on failure
-            }
-        }).catch(error => console.error('Error:', error));
-    }
-</script>
-
+<script src="{{ url_for('static', filename='js/profile.js') }}"></script>
 
 {% endblock %}

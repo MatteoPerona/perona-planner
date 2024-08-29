@@ -1,0 +1,16 @@
+<div class="project-title" onclick="toggleTasks(this)">
+    <span class="color-circle" style="background-color: {{ project.color }};"></span>
+    <span class="arrow">&#9656;</span>
+    {{ project.title }}
+    
+    {{ icons.delete_icon('/delete_project/' ~ project.id) }}
+    {{ icons.edit_icon('editProjectForm' ~ project.id) }}
+
+    <div class="add-logic-container" id="editProjectForm{{ project.id }}" style="display:none;">
+        <form method="post" action="/edit_project/{{ project.id }}">
+            {{ forms.input('text', 'new_title', project.title, required=true) }}
+            {{ forms.input('color', 'new_color', project.color, required=true) }}
+            <input type="submit" value="Save Changes">
+        </form>
+    </div>
+</div>

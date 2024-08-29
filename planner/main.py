@@ -13,10 +13,16 @@ main = Blueprint('main', __name__)
 @login_required
 def index():
     projects = Project.query.filter_by(user_id=current_user.id)
+    # Check whether there are projects
     if projects.count() == 0:
         flash('Please add a project before navigating to the home screen.', 'error')  # Flash error message
         return redirect(url_for('profile.profile'))  # Redirect to the profile page
-
+    # Check whether there are tasks
+    tasks = Task.query.filter_by(project_id=projects[0].id)
+    if tasks.count() == 0:
+        flash('Please add a task before navigating to the home screen.', 'error')  # Flash error message
+        return redirect(url_for('profile.profile'))  # Redirect to the profile page
+    
     task_info = {
         project.id: {
             'tasks': list(Task.query.filter_by(project_id=project.id)),

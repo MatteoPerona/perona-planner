@@ -1,0 +1,13 @@
+{% macro delete_icon(form_action) %}
+<form method="post" action="{{ form_action }}" style="display:inline;">
+    <button type="submit" class="delete-icon" style="border: none; background: none;">
+        <i class="fas fa-trash"></i>
+    </button>
+</form>
+{% endmacro %}
+
+{% macro edit_icon(form_id) %}
+<button class="edit-icon" onclick="toggleEditForm('{{ form_id }}')" style="border: none; background: none;">
+    <i class="fas fa-pencil-alt"></i>
+</button>
+{% endmacro %}

@@ -1,21 +1,14 @@
 /* Scrollable Planner */
 #planner {
-    /* max-height: 700px; */
-    /* max-width: 1200px; */
-    /* Enables vertical scrolling if content exceeds max-height */
-    /* Enables vertical scrolling if content exceeds max-width */
     overflow-y: auto;
     overflow-x: auto;
     border: 1px solid #ccc;
-    /* Optional: adds a border around the list */
     padding: 10px;
-    /* Optional: adds some padding inside the container */
     color: black;
     background: #ffffff;
     text-align: left;
     margin: 0 auto;
     margin-top: 20px;
-    /* Optional: adds some space above the container */
 }
 
 .project-row {
@@ -108,4 +101,24 @@
 
 .donations {
     margin-top: 50px;
+}
+
+
+.date-picker {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.date-input {
+    display: flex;
+    flex-direction: column;
+}
+
+@media screen and (max-width: 480px) {
+    .date-input {
+        width: 100%;
+    }
 }

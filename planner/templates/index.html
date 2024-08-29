@@ -6,13 +6,23 @@
 <hr>
 
 <!-- <h3 class="title is-5">Time Frame</h3> -->
-<form id="datePicker" action="/pick_timeframe">
+<!-- <form id="datePicker" action="/pick_timeframe">
 	Start Date:
 	<input type="date" id="start_date" name="timeframe_start" value="{{ earliest }}" required>
 	End Date:
 	<input type="date" id="end_date" name="timeframe_end" value="{{ latest }}" required>
-</form>
+</form> -->
 
+<form id="datePicker" action="/pick_timeframe" class="date-picker">
+    <div class="date-input">
+        <label for="start_date">Start Date:</label>
+        <input type="date" id="start_date" name="timeframe_start" value="{{ earliest }}" required>
+    </div>
+    <div class="date-input">
+        <label for="end_date">End Date:</label>
+        <input type="date" id="end_date" name="timeframe_end" value="{{ latest }}" required>
+    </div>
+</form>
 
 <div id="planner">
 	

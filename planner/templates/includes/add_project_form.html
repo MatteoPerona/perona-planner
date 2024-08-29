@@ -1,0 +1,11 @@
+<div class="add-logic-container">
+    <button class="plus-icon-button button is-info" id="add_project_button"
+            onclick="toggleAddForm('add_project_form', 'add_project_button')">
+        Add Project
+    </button>
+    <form method="post" action="/add_project" id="add_project_form" style="display: none;">
+        {{ forms.input('text', 'title', placeholder='New Project Title', required=true) }}
+        {{ forms.input('color', 'color', value='#2D3638', required=true) }}
+        <input type="submit" value="Add Project" class="button is-info is-outlined">
+    </form>
+</div>

@@ -1,0 +1,17 @@
+<div class="add-logic-container">
+    <button class="plus-icon-button button is-info is-outlined" id="add_task_button_{{ project.id }}"
+            onclick="toggleAddForm('add_task_form_{{ project.id }}', 'add_task_button_{{ project.id }}')">
+        Add Task
+    </button>
+
+    <form method="post" action="/add_task" id="add_task_form_{{ project.id }}" style="display: none;">
+        {{ forms.input('text', 'title', placeholder='New Task Title', required=true) }}
+        {{ forms.select('project_id', projects, project.id) }}
+        <label for="project">From:</label>
+        {{ forms.input('date', 'start_date', required=true) }}
+        <label for="project">To:</label>
+        {{ forms.input('date', 'end_date', required=true) }}
+        {{ forms.input('text', 'task_type', placeholder='Task Type', required=true) }}
+        <input type="submit" value="Add Task" class="button is-info is-outlined">
+    </form>
+</div>
